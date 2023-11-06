@@ -19,8 +19,11 @@ import solitaire.Card.Suit;
 public class GUI extends JFrame implements ActionListener, MouseListener, MouseMotionListener{
 
 	Solitaire game;
+	CardPileContainerPane pileContainer;
+
    public GUI(Solitaire game){
 	   this.game= game;
+	   
         //Create and set up the window.
        setTitle("Solitaire");
        setSize(1200,700);
@@ -46,7 +49,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
        
 
        
-       CardPileContainerPane pileContainer = new CardPileContainerPane();
+       pileContainer = new CardPileContainerPane();
 
        CardDeckPanel deckContainer = new CardDeckPanel();
        

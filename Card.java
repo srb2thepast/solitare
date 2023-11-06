@@ -71,12 +71,14 @@ public class Card extends JPanel{
 			
 			return Integer.parseInt(value);
 		}
+
+		
 		/**
-		 * toString method, eg: "K of Diamonds"
-		 * @return {String} Description of the current card
+		 * toString method, eg: "K of Diamonds up"
+		 * @return {String} Description of the current card including reversal. 
 		 */
 		public String toString() {
-			return valueString(value) + " of " + suit.name();
+			return valueString(value) + " of " + suit.name() + " " +  (isReversed ==  true ? "down" : "up");
 		}
 		
 		/**
@@ -85,6 +87,11 @@ public class Card extends JPanel{
 		 */
 		public String saveAsString() {
 			return valueString(value) + " of " + suit.name() + " of " + isReversed;
+		}
+
+		// The original purpose that toString() served. Returns info about this card that matches the file names in the image folder.
+		public String fileString() {
+			return valueString(value) + " of " + suit.name();
 		}
 		
 		/**
@@ -99,7 +106,7 @@ public class Card extends JPanel{
 			
 			try {
 				// Load the image for the current file
-				URL url = getClass().getResource("../solitaire/images/cards/" + this.toString() +".png");
+				URL url = getClass().getResource("../solitaire/images/cards/" + this.fileString() +".png");
 				//System.out.println(this.getClass().getResource(""));
 				image = ImageIO.read(url);
 				//System.out.println(url);
