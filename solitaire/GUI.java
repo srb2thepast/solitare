@@ -72,7 +72,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	private void update() {
 		System.out.println("Updating screen.");
 		pileContainer.setAllPilePanes(game.centerPiles);
-		deckContainer.setDisplayedDeck(game.getNextDeckCards());
+		deckContainer.setDisplayedDeck();
 		
 		System.out.println(game.toString());
 		revalidate();

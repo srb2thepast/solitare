@@ -20,6 +20,8 @@ public class Solitaire {
 	Stack<Card> spadesFinal;
 	Stack<Card> clubsFinal;
 	Queue<Card> deck;
+	
+	Stack<Card> deck3Cards;
 
 	public Solitaire() {
 		initiate();
@@ -156,6 +158,7 @@ public class Solitaire {
 				}
 			}
 		}
+		
 		return revealedCards;
 
 	}
