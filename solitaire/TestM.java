@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Stack;
 import solitaire.Card.Suit;
 import java.util.Stack;
-import solitaire.*;
 
 public class TestM {
     Solitaire toTest;
