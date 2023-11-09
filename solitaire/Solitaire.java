@@ -11,14 +11,15 @@ import solitaire.Card.Suit;
 
 public class Solitaire {
 
-	public ArrayList<Stack<Card>> centerPiles;
-	public Stack<Card> faceUpDeckCards;
 
-	public Stack<Card> diamondsFinal;
-	public Stack<Card> heartsFinal;
-	public Stack<Card> spadesFinal;
-	public Stack<Card> clubsFinal;
-	public Queue<Card> deck;
+	ArrayList<Stack<Card>> centerPiles;
+	Stack<Card> faceUpDeckCards;
+
+	Stack<Card> diamondsFinal;
+	Stack<Card> heartsFinal;
+	Stack<Card> spadesFinal;
+	Stack<Card> clubsFinal;
+	Queue<Card> deck;
 
 	public Solitaire() {
 		initiate();
@@ -140,6 +141,23 @@ public class Solitaire {
 
 		
 		return false;
+	}
+	public Stack<Card> getNextDeckCards(){
+		Stack<Card> revealedCards = new Stack<Card>();
+		Queue<Card> secondDeck = new LinkedList<Card>();
+		if(deck.isEmpty()){
+			for(int i = 0; i < revealedCards.size()-1;i++) {
+				secondDeck.add(revealedCards.pop());
+			}
+		} else{
+			for(int i = 0; i<3; i++){
+				if(!deck.isEmpty()){
+					revealedCards.push(deck.poll());
+				}
+			}
+		}
+		return revealedCards;
+
 	}
 
 	// the part of your program that's in charge of game rules goes here.
