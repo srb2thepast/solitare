@@ -56,7 +56,7 @@ public class CardPile extends JLayeredPane {
 	}
 	
 	public void drawPile() {
-		this.removeAll();
+		removeAll();
 
 		System.out.println("A pile is being drawn.");
 		int i = 0;

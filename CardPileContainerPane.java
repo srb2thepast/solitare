@@ -25,23 +25,25 @@ public class CardPileContainerPane extends JLayeredPane {
 		setPreferredSize(new Dimension(150, 10));
 		pilePanes = new ArrayList<CardPile>();
 	}
-	
+
 	public void setAllPilePanes(ArrayList<Stack<Card>> pileList) {
 		System.out.println("Setting all piles");
 		pilePanes.clear();
+
 		for (Stack<Card> cardStack : pileList) {
+			drawPile(cardStack);
+
 			pilePanes.add(new CardPile(cardStack));
 		}
-		
+
 		System.out.println("Redrawing all piles");
-		this.removeAll();
 		for (CardPile pile : pilePanes) {
 			pile.drawPile();
 			add(pile);
 		}
 	}
 
-	private void testDraw2 () {
+	private void testDraw2() {
 		ArrayList<Stack<Card>> centerPiles = new ArrayList<Stack<Card>>();
 
 		LinkedList<Card> deck = new LinkedList<Card>();
@@ -74,10 +76,10 @@ public class CardPileContainerPane extends JLayeredPane {
 		// Create a dummy card list
 		ArrayList<Stack<Card>> pileList = new ArrayList<Stack<Card>>();
 		for (int i = 0; i < 7; i++) {
-			
+
 			Stack<Card> testStack = new Stack<Card>();
-			testStack.add(new Card(i+1, Suit.Diamonds));
-			testStack.add(new Card(i+1, Suit.Hearts));
+			testStack.add(new Card(i + 1, Suit.Diamonds));
+			testStack.add(new Card(i + 1, Suit.Hearts));
 			testStack.add(new Card(2, Suit.Hearts));
 			testStack.add(new Card(3, Suit.Hearts));
 			testStack.add(new Card(4, Suit.Hearts));
@@ -86,18 +88,17 @@ public class CardPileContainerPane extends JLayeredPane {
 			testStack.add(new Card(7, Suit.Hearts));
 			pileList.add(testStack);
 		}
-		
+
 		// set it
 		setAllPilePanes(pileList);
 	}
-	
-   public JLayeredPane drawPile(Stack<Card> stackIn) {
 
+	public JLayeredPane drawPile(Stack<Card> stackIn) {
 
 		// the drawing of the cards is mostly handled in CardPile.drawPile().
 		CardPile pile = new CardPile(stackIn);
 		pile.drawPile();
 
-	    return pile;
+		return pile;
 	}
 }
