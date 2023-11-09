@@ -21,6 +21,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	Solitaire game;
 	CardPileContainerPane pileContainer;
+	CardDeckPanel deckContainer;
 
 	public GUI(Solitaire game) {
 		this.game = game;
@@ -51,7 +52,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 		pileContainer = new CardPileContainerPane();
 
-		CardDeckPanel deckContainer = new CardDeckPanel();
+		deckContainer = new CardDeckPanel();
 
 		CompletedCardPane completedContainer = new CompletedCardPane();
 
@@ -71,6 +72,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	private void update() {
 		System.out.println("Updating screen.");
 		pileContainer.setAllPilePanes(game.centerPiles);
+		deckContainer.setDisplayedDeck(game.getNextDeckCards());
 		
 		System.out.println(game.toString());
 		revalidate();

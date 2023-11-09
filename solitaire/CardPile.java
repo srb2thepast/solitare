@@ -54,16 +54,16 @@ public class CardPile extends JLayeredPane {
 		
 		drawPile();
 	}
-	
+
 	public void drawPile() {
 		removeAll();
 
-		System.out.println("A pile is being drawn.");
+		// System.out.println("A pile is being drawn.");
 		int i = 0;
 		Object cardsObj[];
 		cardsObj = cards.toArray(); //please note we convert this stack to an array so that we can iterate through it backwards while drawing. You�ll need to cast each element inside cards to a <Card> in order to use the methods to adjust their position
 
-		System.out.println("Card count:  " + cards.size() + ", cards: " + cards);
+		// System.out.println("Card count:  " + cards.size() + ", cards: " + cards);
 		
 		for (i = cards.size()-1; i >= 0; i-=1) {
 			Card card = cards.get(i);

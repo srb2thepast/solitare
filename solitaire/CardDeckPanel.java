@@ -23,5 +23,20 @@ public class CardDeckPanel extends JLayeredPane {
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
 	}
+	
+	public void setDisplayedDeck(Stack<Card> cards) {
+		removeAll();
+		int i = 0;
+		Object cardsObj[];
+		cardsObj = cards.toArray(); //please note we convert this stack to an array so that we can iterate through it backwards while drawing. You�ll need to cast each element inside cards to a <Card> in order to use the methods to adjust their position
 
+		// System.out.println("Card count:  " + cards.size() + ", cards: " + cards);
+		
+		for (i = cards.size()-1; i >= 0; i-=1) {
+			Card card = cards.get(i);
+			this.setPosition(card, cardsObj.length-i);
+			card.setBounds(0, i*39, card.getWidth(), card.getHeight());
+			add(card);
+		}
+	}
 }
