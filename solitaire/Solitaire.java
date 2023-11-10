@@ -20,11 +20,19 @@ public class Solitaire {
 	Stack<Card> spadesFinal;
 	Stack<Card> clubsFinal;
 	Queue<Card> deck;
-	
-	Stack<Card> deck3Cards;
 
 	public Solitaire() {
 		initiate();
+
+		diamondsFinal.add(new Card(9,Card.Suit.Diamonds));
+		diamondsFinal.add(new Card(10,Card.Suit.Diamonds));
+		
+		heartsFinal.add(new Card(10,Card.Suit.Hearts));
+		heartsFinal.add(new Card(12,Card.Suit.Hearts));
+		
+		spadesFinal.add(new Card(9,Card.Suit.Spades));
+		
+		clubsFinal.add(new Card(9,Card.Suit.Clubs));
 	}
 
 	public String toString() {
@@ -159,6 +167,7 @@ public class Solitaire {
 			}
 		}
 		
+		faceUpDeckCards = revealedCards;
 		return revealedCards;
 
 	}

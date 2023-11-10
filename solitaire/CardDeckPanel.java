@@ -23,7 +23,7 @@ public class CardDeckPanel extends JLayeredPane {
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
 	}
-	
+
 	public void setDisplayedDeck(Stack<Card> cards) {
 		removeAll();
 		int i = 0;

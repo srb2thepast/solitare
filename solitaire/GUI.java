@@ -22,13 +22,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	Solitaire game;
 	CardPileContainerPane pileContainer;
 	CardDeckPanel deckContainer;
+	CompletedCardPane completedContainer;
 
 	public GUI(Solitaire game) {
 		this.game = game;
 
 		// Create and set up the window.
 		setTitle("Solitaire");
-		setSize(1200, 700);
+		setSize(1200, 750);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// this supplies the background
@@ -54,7 +55,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 		deckContainer = new CardDeckPanel();
 
-		CompletedCardPane completedContainer = new CompletedCardPane();
+		completedContainer = new CompletedCardPane();
 
 		add(pileContainer, BorderLayout.CENTER);
 
@@ -69,10 +70,17 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		
 	}
 
+	// Precondition: none
+	// Postcondition: reloads the entire screen with the information from the current state of the game.
 	private void update() {
 		System.out.println("Updating screen.");
 		pileContainer.setAllPilePanes(game.centerPiles);
-		deckContainer.setDisplayedDeck();
+		completedContainer.setDisplayedCompleted(game.heartsFinal,game.diamondsFinal,game.clubsFinal,game.spadesFinal);
+		
+		if (game.faceUpDeckCards != null) {
+			deckContainer.setDisplayedDeck(game.faceUpDeckCards);
+		}
+		
 		
 		System.out.println(game.toString());
 		revalidate();
@@ -82,7 +90,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+			
 	}
 
 	@Override
