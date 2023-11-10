@@ -26,7 +26,29 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	public GUI(Solitaire game) {
 		this.game = game;
-
+	  for(Card c: game.deck) {
+		c.addMouseListener(this);
+	   }
+	   for(Stack<Card> c : game.centerPiles) {
+		for(Card d : c) {
+			d.addMouseListener(this);
+		}
+	   }
+	   for(Card c : game.faceUpDeckCards) {
+		c.addMouseListener(this);
+	   }
+	   for(Card c : game.diamondsFinal) {
+		c.addMouseListener(this);
+	   }
+	   for(Card c : game.heartsFinal) {
+		c.addMouseListener(this);
+	   }
+	   for(Card c : game.spadesFinal) {
+		c.addMouseListener(this);
+	   }
+	   for(Card c : game.clubsFinal) {
+		c.addMouseListener(this);
+	   }
 		// Create and set up the window.
 		setTitle("Solitaire");
 		setSize(1200, 750);
@@ -101,9 +123,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		update();
-
+	// TODO Auto-generated method stub
+		if(arg0.getComponent() instanceof Card) {
+			Card c = (Card)arg0.getComponent();
+			if(toMove.equals(null)) {
+				toMove=c;
+			} else {
+			    location = c;
+			}
+			
+		}
 	}
 
 	@Override
