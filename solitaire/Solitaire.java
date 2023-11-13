@@ -171,6 +171,17 @@ public class Solitaire {
 		return revealedCards;
 
 	}
+	//precondition: an instance of solitaire is initialized
+	//postcondition: returns a boolean; if the final piles are full return true, else return false
+	public boolean checkWin() {
+		boolean win;
+		if(this.diamondsFinal.size() == 13 && this.spadesFinal.size() == 13 && this.clubsFinal.size() == 13 && this.heartsFinal.size() == 13) {
+			win=true;
+		} else {
+			win=false;
+		}
+		return win;
+	}
 
 	// the part of your program that's in charge of game rules goes here.
 }
