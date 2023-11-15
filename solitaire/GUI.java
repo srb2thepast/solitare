@@ -25,32 +25,32 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	CompletedCardPane completedContainer;
 	Card location;
 	Card toMove;
-	
+
 	public GUI(Solitaire game) {
 		this.game = game;
-	  for(Card c: game.deck) {
-		c.addMouseListener(this);
-	   }
-	   for(Stack<Card> c : game.centerPiles) {
-		for(Card d : c) {
-			d.addMouseListener(this);
+		for (Card c : game.deck) {
+			c.addMouseListener(this);
 		}
-	   }
-	   for(Card c : game.faceUpDeckCards) {
-		c.addMouseListener(this);
-	   }
-	   for(Card c : game.diamondsFinal) {
-		c.addMouseListener(this);
-	   }
-	   for(Card c : game.heartsFinal) {
-		c.addMouseListener(this);
-	   }
-	   for(Card c : game.spadesFinal) {
-		c.addMouseListener(this);
-	   }
-	   for(Card c : game.clubsFinal) {
-		c.addMouseListener(this);
-	   }
+		for (Stack<Card> c : game.centerPiles) {
+			for (Card d : c) {
+				d.addMouseListener(this);
+			}
+		}
+		for (Card c : game.faceUpDeckCards) {
+			c.addMouseListener(this);
+		}
+		for (Card c : game.diamondsFinal) {
+			c.addMouseListener(this);
+		}
+		for (Card c : game.heartsFinal) {
+			c.addMouseListener(this);
+		}
+		for (Card c : game.spadesFinal) {
+			c.addMouseListener(this);
+		}
+		for (Card c : game.clubsFinal) {
+			c.addMouseListener(this);
+		}
 		// Create and set up the window.
 		setTitle("Solitaire");
 		setSize(1200, 750);
@@ -90,22 +90,21 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		// this.add(card);
 		this.setVisible(true);
 		update();
-		
-		
 	}
 
 	// Precondition: none
-	// Postcondition: reloads the entire screen with the information from the current state of the game.
+	// Postcondition: reloads the entire screen with the information from the
+	// current state of the game.
 	private void update() {
 		System.out.println("Updating screen.");
 		pileContainer.setAllPilePanes(game.centerPiles);
-		completedContainer.setDisplayedCompleted(game.heartsFinal,game.diamondsFinal,game.clubsFinal,game.spadesFinal);
-		
+		completedContainer.setDisplayedCompleted(game.heartsFinal, game.diamondsFinal, game.clubsFinal,
+				game.spadesFinal);
+
 		if (game.faceUpDeckCards != null) {
-			deckContainer.setDisplayedDeck(game.faceUpDeckCards);
+			deckContainer.setDisplayedDeck(game.faceUpDeckCards,game.deck.peek());
 		}
-		
-		
+
 		System.out.println(game.toString());
 		revalidate();
 		repaint();
@@ -114,7 +113,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-			
+
 	}
 
 	@Override
@@ -125,18 +124,77 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-	// TODO Auto-generated method stub
-		if(arg0.getComponent() instanceof Card) {
-			Card c = (Card)arg0.getComponent();
-			if(toMove.equals(null)) {
-				toMove=c;
-			} else {
-			    location = c;
-			}
-			
-		}
+		// TODO Auto-generated method stub
 	}
 
+	private void moveCards() {
+
+		if (toMove.value == 100) return;
+		if (game.legalMove(toMove, location) == false) return;
+		
+		
+		ArrayList<Stack<Card>> stacks = new ArrayList<Stack<Card>>();
+		stacks.add(game.heartsFinal);
+		stacks.add(game.diamondsFinal);
+		stacks.add(game.clubsFinal);
+		stacks.add(game.spadesFinal);
+
+		// find container of toMove
+		Stack<Card> toMoveParent = findCardParent(toMove);
+		
+		// find container of location
+		Stack<Card> locationParent = findCardParent(location);
+		
+		ArrayList<Card> cardsToMove = new ArrayList<Card>();
+		
+		int toMoveIndex = toMoveParent.indexOf(toMove);
+		for (int i = toMoveIndex; i<toMoveParent.size(); i++) {
+			cardsToMove.add(toMoveParent.get(i));
+			
+		}
+
+		for (Card card : cardsToMove) {
+			toMoveParent.remove(card);
+			locationParent.add(card);
+		}
+		
+		// show the card that was above toMove
+		if (toMoveIndex>0) {
+			toMoveParent.get(toMoveIndex-1).show();
+		}
+		
+		System.out.println(game);
+		update();
+		
+		
+	}
+
+	public void win() {
+		
+	}
+	
+	private Stack<Card> findCardParent(Card card) {
+		
+		for (Stack<Card> centerStack : game.centerPiles) {
+			if (centerStack.contains(card)) {
+				return centerStack;
+			}
+		}
+		if (game.faceUpDeckCards.contains(card)) return game.faceUpDeckCards;
+		
+		ArrayList<Stack<Card>> stacks = new ArrayList<Stack<Card>>();
+		stacks.add(game.heartsFinal);
+		stacks.add(game.diamondsFinal);
+		stacks.add(game.clubsFinal);
+		stacks.add(game.spadesFinal);
+		for (Stack<Card> winStack : stacks) {
+			if (winStack.contains(card)) {
+				return winStack;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -153,6 +211,25 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
+		if (arg0.getComponent() instanceof Card) {
+			Card c = (Card) arg0.getComponent();
+			if (game.deck.contains(c)) {
+				game.getNextDeckCards();
+				update();
+			}
+			
+			if (toMove == null) {
+				toMove = c;
+				System.out.println("toMove = " + c);
+			} else {
+				location = c;
+				System.out.println("location = " + c);
+				moveCards();
+				toMove = null;
+				location = null;
+			}
+
+		}
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import solitaire.Card.Suit;
 
 public class Solitaire {
 
-
 	ArrayList<Stack<Card>> centerPiles;
 	Stack<Card> faceUpDeckCards;
 
@@ -24,33 +23,31 @@ public class Solitaire {
 	public Solitaire() {
 		initiate();
 
-		diamondsFinal.add(new Card(9,Card.Suit.Diamonds));
-		diamondsFinal.add(new Card(10,Card.Suit.Diamonds));
-		
-		heartsFinal.add(new Card(10,Card.Suit.Hearts));
-		heartsFinal.add(new Card(12,Card.Suit.Hearts));
-		
-		spadesFinal.add(new Card(9,Card.Suit.Spades));
-		
-		clubsFinal.add(new Card(9,Card.Suit.Clubs));
+		diamondsFinal.add(new Card(100, Suit.Spades));
+
+		heartsFinal.add(new Card(100, Suit.Spades));
+
+		spadesFinal.add(new Card(100, Suit.Spades));
+
+		clubsFinal.add(new Card(100, Suit.Spades));
 	}
 
 	public String toString() {
 		String finalString = " {=-=} CENTER: ";
-		
+
 		int i = 0;
 		for (Stack<Card> cardList : centerPiles) {
 			finalString += "\nCOLOUMN [" + i + "]: ";
 			finalString += cardList;
-			i+=1;
+			i += 1;
 		}
 
 		finalString += "\n {=-=} DECK: ";
 		finalString += "\n" + deck;
-		finalString +=  "\n face up: " + faceUpDeckCards + ")";
+		finalString += "\n face up: " + faceUpDeckCards + ")";
 
 		finalString += "\n {=-=} FINAL PILES: ";
-		
+
 		finalString += "\n - Diamonds: ";
 		finalString += "\n" + diamondsFinal;
 		finalString += "\n - Hearts: ";
@@ -61,20 +58,23 @@ public class Solitaire {
 		finalString += "\n" + clubsFinal;
 		return finalString;
 	}
-	
+
 	private void initiate() {
 		diamondsFinal = new Stack<Card>();
 		heartsFinal = new Stack<Card>();
 		spadesFinal = new Stack<Card>();
 		clubsFinal = new Stack<Card>();
 		centerPiles = new ArrayList<Stack<Card>>();
+		faceUpDeckCards = new Stack<Card>();
 		deck = new LinkedList<Card>();
 
 		ArrayList<Card> temp = new ArrayList<Card>();
 
 		for (Suit suit : Suit.values()) {
 			for (int value = 1; value <= 13; ++value) {
-				temp.add(new Card(value, suit));
+				Card c = new Card(value, suit);
+				c.hide();
+				temp.add(c);
 			}
 		}
 
@@ -86,8 +86,14 @@ public class Solitaire {
 			System.out.println(i);
 			centerPiles.add(new Stack<Card>());
 
+			centerPiles.get(centerPiles.size() - 1).add(new Card(0, Suit.Spades));
 			for (int j = 0; j < i; j++) {
-				centerPiles.get(centerPiles.size() - 1).add(deck.remove());
+				Card card = deck.remove();
+				card.show();
+				if (j != i-1) {
+					card.hide();
+				}
+				centerPiles.get(centerPiles.size() - 1).add(card);
 			}
 		}
 
@@ -96,77 +102,93 @@ public class Solitaire {
 	public boolean legalMove(Card toMove, Card location) {
 
 		// display cards for debugging
-		
-		
 
 		// make sure you check to see if the card is actually visible to us! You can do
 		// so by doing.
 
 		// If the moving card is face down, the move is illegal
 		if (toMove.isReversed == true) {
-				return false;
+			return false;
 
 		}
-		
+		// if the moving card is the empty card (100 of spades), the move is illegal.
+		if (toMove.value == 100)
+			return false;
+
 		// MOVING TO FINAL
 
 		// If the target card is in the one of the final decks:
-		if (
-			diamondsFinal.contains(location) || 
-			spadesFinal.contains(location) ||
-			heartsFinal.contains(location) ||
-			clubsFinal.contains(location)) {
-			// if the card being moved is in the center and is at the bottom of it's stack (thus meaning it's moving alone)
-			for (Stack<Card> pile : centerPiles) { 
-				if (pile.indexOf(toMove) == pile.size()-1) {
-					// if toMove is 1 more than the target card, and the cards are the same suit, then valid
-					if (location.suit == toMove.suit && location.value == toMove.value - 1) 	{
+		if (diamondsFinal.contains(location) || spadesFinal.contains(location) || heartsFinal.contains(location)
+				|| clubsFinal.contains(location)) {
+			// if the card being moved is in the center and is at the bottom of it's stack
+			// (thus meaning it's moving alone)
+			for (Stack<Card> pile : centerPiles) {
+				if (pile.indexOf(toMove) == pile.size() - 1) {
+					// if toMove is 1 more than the target card, and the cards are the same suit,
+					// then valid
+					if (location.suit == toMove.suit && location.value == toMove.value - 1) {
 						return true;
 					}
+					// if toMove is A and the target card is the empty card in the winning pile,
+					// then valid
+					if (location.value == 100 && toMove.value == 1) {
+						return true;
+					}
+
 				}
 			}
 
 			// if the card being moved is simply one of the face-up deck cards
 			if (faceUpDeckCards.contains(toMove)) {
-				// if toMove is 1 more than the target card, and the cards are the same suit, then valid
-				if (location.suit == toMove.suit && location.value == toMove.value - 1) 	{
+				// if toMove is 1 more than the target card, and the cards are the same suit,
+				// then valid
+				if (location.suit == toMove.suit && location.value == toMove.value - 1) {
 					return true;
 				}
 			}
 		}
-		
+
 		// MOVING TO CENTER
-		
+
 		// If the target card is in one of the center piles & it's at the bottom
 		for (Stack<Card> i : centerPiles) {
-			if (i.indexOf(location) == i.size()-1) {
-				// if the current toMove card is 1 less than the target Card and they are opposite suits, then valid
-				if (toMove.value +  1 == location.value && toMove.suit != location.suit) {
+			if (i.indexOf(location) == i.size() - 1) {
+				// if the current toMove card is 1 less than the target Card and they are
+				// opposite suits, then valid
+				if (toMove.value + 1 == location.value && toMove.suit != location.suit) {
+					return true;
+				}
+
+				// if toMove is K and the target card is the empty card in the center, then
+				// valid
+				if (location.value == 100 && toMove.value == 13) {
 					return true;
 				}
 
 			}
 		}
 
-
-		
 		return false;
 	}
-	public Stack<Card> getNextDeckCards(){
+
+	public Stack<Card> getNextDeckCards() {
 		Stack<Card> revealedCards = new Stack<Card>();
 		Queue<Card> secondDeck = new LinkedList<Card>();
-		if(deck.isEmpty()){
-			for(int i = 0; i < revealedCards.size()-1;i++) {
+		if (deck.isEmpty()) {
+			for (int i = 0; i < revealedCards.size() - 1; i++) {
 				secondDeck.add(revealedCards.pop());
 			}
-		} else{
-			for(int i = 0; i<3; i++){
-				if(!deck.isEmpty()){
+		} else {
+			for (int i = 0; i < 3; i++) {
+				if (!deck.isEmpty()) {
 					revealedCards.push(deck.poll());
 				}
 			}
 		}
-		
+		for (Card card: revealedCards) {
+			card.show();
+		}
+
 		faceUpDeckCards = revealedCards;
 		return revealedCards;
 

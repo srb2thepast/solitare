@@ -104,6 +104,11 @@ public class Card extends JPanel{
 			this.suit = suit;		
 			isReversed = false;
 			
+			if (value == 0) {
+				this.value = 100;
+				this.suit = Suit.Spades;
+			}
+			
 			try {
 				// Load the image for the current file
 				URL url = getClass().getResource("../solitaire/images/cards/" + this.fileString() +".png");
@@ -117,7 +122,7 @@ public class Card extends JPanel{
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			positionOffset = new Point(0,0);
 			setSize(new Dimension(100, 145));
 			setOpaque(false);

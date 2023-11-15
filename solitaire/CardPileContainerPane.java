@@ -29,6 +29,7 @@ public class CardPileContainerPane extends JLayeredPane {
 	public void setAllPilePanes(ArrayList<Stack<Card>> pileList) {
 		System.out.println("Setting all piles");
 		pilePanes.clear();
+		this.removeAll();
 
 		for (Stack<Card> cardStack : pileList) {
 			drawPile(cardStack);
