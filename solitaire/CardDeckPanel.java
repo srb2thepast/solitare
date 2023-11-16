@@ -34,7 +34,10 @@ public class CardDeckPanel extends JLayeredPane {
 
 		// System.out.println("Card count:  " + cards.size() + ", cards: " + cards);
 
-		Card deckTop = topOfDeck;
+		Card deckTop = new Card(100,Suit.Spades);
+		if (topOfDeck != null) {
+			deckTop = topOfDeck;
+		} 
 		this.setPosition(deckTop, 0);
 		deckTop.setBounds(0, i*39, deckTop.getWidth(), deckTop.getHeight());
 		add(deckTop);

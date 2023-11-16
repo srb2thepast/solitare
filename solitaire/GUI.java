@@ -154,6 +154,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		}
 
 		for (Card card : cardsToMove) {
+			if (toMoveParent == game.faceUpDeckCards) {
+				// remove the card from both the face up set and the secondDeck (so it doesn't get added back in)
+				game.secondDeck.remove(card);
+			}
 			toMoveParent.remove(card);
 			locationParent.add(card);
 		}
@@ -166,13 +170,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		System.out.println(game);
 		update();
 		
-		
 	}
 
-	public void win() {
-		
-	}
-	
 	private Stack<Card> findCardParent(Card card) {
 		
 		for (Stack<Card> centerStack : game.centerPiles) {
@@ -193,6 +192,40 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 			}
 		}
 		return null;
+	}
+	
+	public void win() {
+		setVisible(false);
+		JButton winButton = new JButton();
+		winButton.setBounds(100,100,250,100);
+		winButton.addActionListener(this);
+		winButton.setText("Go Back");
+		winButton.setFont(new Font("Comic Sans MS", Font.PLAIN,20));
+		winButton.setFocusable(false);
+		winButton.setHorizontalTextPosition(JButton.CENTER);
+		winButton.setVerticalTextPosition(JButton.BOTTOM);
+		winButton.setVerticalAlignment(JButton.CENTER);
+		winButton.setHorizontalAlignment(JButton.CENTER);
+		
+		
+		JLabel winLabel = new JLabel();
+		winLabel.setText("YOU WIN");
+		winLabel.setHorizontalTextPosition(JLabel.CENTER);
+		winLabel.setVerticalTextPosition(JLabel.TOP);
+		winLabel.setFont(new Font("Comic Sans MS", Font.PLAIN,40));
+		winLabel.setOpaque(true);
+		winLabel.setVerticalAlignment(JLabel.TOP);
+		winLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		JFrame winFrame = new JFrame();
+		winFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		winFrame.setTitle("Solitaire");
+		winFrame.setSize(1200, 750);
+		winFrame.add(winLabel);
+		winFrame.add(winButton);
+		winFrame.setVisible(true);
+		update();
+		
 	}
 	
 	@Override

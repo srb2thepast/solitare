@@ -28,7 +28,6 @@ public class Solitaire {
 		heartsFinal.add(new Card(100, Suit.Spades));
 
 		spadesFinal.add(new Card(100, Suit.Spades));
-
 		clubsFinal.add(new Card(100, Suit.Spades));
 	}
 
@@ -45,6 +44,7 @@ public class Solitaire {
 		finalString += "\n {=-=} DECK: ";
 		finalString += "\n" + deck;
 		finalString += "\n face up: " + faceUpDeckCards + ")";
+		finalString += "\n secondDeck:" + secondDeck;
 
 		finalString += "\n {=-=} FINAL PILES: ";
 
@@ -78,10 +78,12 @@ public class Solitaire {
 			}
 		}
 
-		Collections.shuffle(temp);
-
+		//Collections.shuffle(temp);
+		
 		deck.addAll(temp);
-
+		deck.add(new Card(0,Suit.Spades));
+		
+		
 		for (int i = 1; i <= 7; i++) {
 			System.out.println(i);
 			centerPiles.add(new Stack<Card>());
@@ -96,6 +98,10 @@ public class Solitaire {
 				centerPiles.get(centerPiles.size() - 1).add(card);
 			}
 		}
+		
+
+		//Object[] deckS = deck.toArray();
+		//deckS[deckS.length-1] = 
 
 	}
 
@@ -116,6 +122,9 @@ public class Solitaire {
 			return false;
 
 		// MOVING TO FINAL
+		
+		// make sure the toMove card is at the bottom of whatever container it's located in
+		
 
 		// If the target card is in the one of the final decks:
 		if (diamondsFinal.contains(location) || spadesFinal.contains(location) || heartsFinal.contains(location)
@@ -134,7 +143,6 @@ public class Solitaire {
 					if (location.value == 100 && toMove.value == 1) {
 						return true;
 					}
-
 				}
 			}
 
@@ -145,6 +153,11 @@ public class Solitaire {
 				if (location.suit == toMove.suit && location.value == toMove.value - 1) {
 					return true;
 				}
+				// if toMove is A and the target card is the empty card in the winning pile,
+				// then valid
+				if (location.value == 100 && toMove.value == 1) {
+					return true;
+				}
 			}
 		}
 
@@ -152,7 +165,8 @@ public class Solitaire {
 
 		// If the target card is in one of the center piles & it's at the bottom
 		for (Stack<Card> i : centerPiles) {
-			if (i.indexOf(location) == i.size() - 1) {
+			if (i.indexOf(location) == i.size() - 1 && i.contains(location)) {
+				System.out.println("bottom = ");
 				// if the current toMove card is 1 less than the target Card and they are
 				// opposite suits, then valid
 				if (toMove.value + 1 == location.value && toMove.suit != location.suit) {
@@ -161,27 +175,41 @@ public class Solitaire {
 
 				// if toMove is K and the target card is the empty card in the center, then
 				// valid
-				if (location.value == 100 && toMove.value == 13) {
+				if (toMove.value == 13 && location.value == 100) {
+					System.out.println("Move to center empty");
 					return true;
 				}
 
 			}
 		}
-
+		System.out.println(toMove.value  + "<- TM VAL | LOC ->" + location.value);
 		return false;
 	}
 
+	Queue<Card> secondDeck = new LinkedList<Card>();
+	
 	public Stack<Card> getNextDeckCards() {
 		Stack<Card> revealedCards = new Stack<Card>();
-		Queue<Card> secondDeck = new LinkedList<Card>();
-		if (deck.isEmpty()) {
-			for (int i = 0; i < revealedCards.size() - 1; i++) {
-				secondDeck.add(revealedCards.pop());
+		System.out.println("next card value = " + deck.peek().value);
+		if (deck.peek().value == 100) {
+			System.out.println("Last reached");
+			Card spade100 = deck.poll();
+			for (Card c : secondDeck) {
+				c.hide();
+				deck.add(c);
 			}
+			deck.add(spade100);	
+			secondDeck.clear();
 		} else {
 			for (int i = 0; i < 3; i++) {
 				if (!deck.isEmpty()) {
-					revealedCards.push(deck.poll());
+					Card nextCard = deck.peek();
+					if (nextCard.value == 100) {
+						continue;
+					}
+					deck.poll();
+					revealedCards.push(nextCard);
+					secondDeck.add(nextCard);
 				}
 			}
 		}
@@ -193,6 +221,7 @@ public class Solitaire {
 		return revealedCards;
 
 	}
+	
 	//precondition: an instance of solitaire is initialized
 	//postcondition: returns a boolean; if the final piles are full return true, else return false
 	public boolean checkWin() {
