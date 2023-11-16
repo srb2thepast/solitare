@@ -217,12 +217,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		winLabel.setVerticalAlignment(JLabel.TOP);
 		winLabel.setHorizontalAlignment(JLabel.CENTER);
 		
+		JPanel winPanel = new JPanel();
+		winPanel.setLayout(new BorderLayout());
+		winPanel.add(winLabel);
+		winPanel.add(winButton);
+		
 		JFrame winFrame = new JFrame();
 		winFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		winFrame.setTitle("Solitaire");
 		winFrame.setSize(1200, 750);
-		winFrame.add(winLabel);
-		winFrame.add(winButton);
+		winFrame.add(winPanel);
 		winFrame.setVisible(true);
 		update();
 		
