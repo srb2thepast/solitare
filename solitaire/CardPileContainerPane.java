@@ -26,6 +26,8 @@ public class CardPileContainerPane extends JLayeredPane {
 		pilePanes = new ArrayList<CardPile>();
 	}
 
+	// Precondition: A list of the 7 cards that should be drawn to the screen.
+	// Post: Draws all 7 cards.
 	public void setAllPilePanes(ArrayList<Stack<Card>> pileList) {
 		System.out.println("Setting all piles");
 		pilePanes.clear();
@@ -44,55 +46,8 @@ public class CardPileContainerPane extends JLayeredPane {
 		}
 	}
 
-	private void testDraw2() {
-		ArrayList<Stack<Card>> centerPiles = new ArrayList<Stack<Card>>();
-
-		LinkedList<Card> deck = new LinkedList<Card>();
-
-		ArrayList<Card> temp = new ArrayList<Card>();
-
-		for (Suit suit : Suit.values()) {
-			for (int value = 1; value <= 13; ++value) {
-				temp.add(new Card(value, suit));
-			}
-		}
-
-		Collections.shuffle(temp);
-
-		deck.addAll(temp);
-
-		for (int i = 1; i <= 7; i++) {
-			centerPiles.add(new Stack<Card>());
-
-			for (int j = 0; j < i; j++) {
-				centerPiles.get(centerPiles.size() - 1).add(deck.remove());
-			}
-		}
-		setAllPilePanes(centerPiles);
-	}
-
-	private void testDraw() {
-
-		// Create a dummy card list
-		ArrayList<Stack<Card>> pileList = new ArrayList<Stack<Card>>();
-		for (int i = 0; i < 7; i++) {
-
-			Stack<Card> testStack = new Stack<Card>();
-			testStack.add(new Card(i + 1, Suit.Diamonds));
-			testStack.add(new Card(i + 1, Suit.Hearts));
-			testStack.add(new Card(2, Suit.Hearts));
-			testStack.add(new Card(3, Suit.Hearts));
-			testStack.add(new Card(4, Suit.Hearts));
-			testStack.add(new Card(5, Suit.Hearts));
-			testStack.add(new Card(6, Suit.Hearts));
-			testStack.add(new Card(7, Suit.Hearts));
-			pileList.add(testStack);
-		}
-
-		// set it
-		setAllPilePanes(pileList);
-	}
-
+	// Precondition: The stack of cards to be drawn
+	// Post: Draws the given stack as a new CardPile.
 	public JLayeredPane drawPile(Stack<Card> stackIn) {
 
 		// the drawing of the cards is mostly handled in CardPile.drawPile().

@@ -18,6 +18,8 @@ public class CardPile extends JLayeredPane {
 	
 
 
+	// Precondition: none
+	// Post: Creates a new CardPile.
 	public CardPile() {
 		cards = new Stack<Card>();
 		setSize(new Dimension(0,500));
@@ -29,6 +31,8 @@ public class CardPile extends JLayeredPane {
 		setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.BLUE));
 	}
 
+	// Precondition: none
+	// Post: Creates a new CardPile with the given array.
 	public CardPile(Card[] cardArr) {
 		this();
 		for (Card card : cardArr) {
@@ -37,24 +41,32 @@ public class CardPile extends JLayeredPane {
 	}
 	
 
+	// Precondition: none
+	// Post: Creates a new CardPile with the given array.
 	public CardPile(Object[] cardArr) {
 		this();
 		for (Object card : cardArr) {
 			addCard((Card)card);
 		}
 	}
-	
+
+	// Precondition: none
+	// Post: Creates a new CardPile with the given stack.
 	public CardPile(Stack<Card> cardStack) {
 		// Calls the Object[] array constructor 
 		this(cardStack.toArray());
 	}
-	
+
+	// Precondition: Any card.
+	// Post: Adds the given card to the bottom of the CardPile.
 	public void addCard(Card card) {
 		cards.add(card);
 		
 		drawPile();
 	}
 
+	// Precondition: none
+	// Post: draws the pile stored in this class onto the screen.
 	public void drawPile() {
 		removeAll();
 

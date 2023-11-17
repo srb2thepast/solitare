@@ -93,8 +93,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	}
 
 	// Precondition: none
-	// Postcondition: reloads the entire screen with the information from the
-	// current state of the game.
+	// Postcondition: reloads the entire screen with the information from the Sollitare.java
 	private void update() {
 		System.out.println("Updating screen.");
 		pileContainer.setAllPilePanes(game.centerPiles);
@@ -108,9 +107,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		System.out.println(game.toString());
 		revalidate();
 		repaint();
-		if(game.checkWin()) {
-			win();
-		}
 	}
 
 	@Override
@@ -130,6 +126,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		// TODO Auto-generated method stub
 	}
 
+	// Precondition: None
+	// Post: Moves the current toMove towards the current location card if the move is valid.
 	private void moveCards() {
 
 		if (toMove.value == 100) return;
@@ -177,30 +175,15 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	private Stack<Card> findCardParent(Card card) {
 		
-		for (Stack<Card> centerStack : game.centerPiles) {
-			if (centerStack.contains(card)) {
-				return centerStack;
-			}
-		}
-		if (game.faceUpDeckCards.contains(card)) return game.faceUpDeckCards;
-		
-		ArrayList<Stack<Card>> stacks = new ArrayList<Stack<Card>>();
-		stacks.add(game.heartsFinal);
-		stacks.add(game.diamondsFinal);
-		stacks.add(game.clubsFinal);
-		stacks.add(game.spadesFinal);
-		for (Stack<Card> winStack : stacks) {
-			if (winStack.contains(card)) {
-				return winStack;
-			}
-		}
-		return null;
+		return game.findCardParent(card);
 	}
-	
+
+	// Precondition: none
+	// Postcondition: Displays the win screen.
 	public void win() {
 		setVisible(false);
 		JButton winButton = new JButton();
-		//winButton.setBounds(100,100,250,100);
+		winButton.setBounds(100,100,250,100);
 		winButton.addActionListener(this);
 		winButton.setText("Go Back");
 		winButton.setFont(new Font("Comic Sans MS", Font.PLAIN,20));
@@ -209,23 +192,23 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		winButton.setVerticalTextPosition(JButton.BOTTOM);
 		winButton.setVerticalAlignment(JButton.CENTER);
 		winButton.setHorizontalAlignment(JButton.CENTER);
-		winButton.setPreferredSize(new Dimension(250, 100));
+		
 		
 		JLabel winLabel = new JLabel();
-		winLabel.setText("YOU WIN ");
+		winLabel.setText("YOU WIN");
 		winLabel.setHorizontalTextPosition(JLabel.CENTER);
 		winLabel.setVerticalTextPosition(JLabel.TOP);
 		winLabel.setFont(new Font("Comic Sans MS", Font.PLAIN,40));
 		winLabel.setOpaque(true);
-		winLabel.setVerticalAlignment(JLabel.CENTER);
+		winLabel.setVerticalAlignment(JLabel.TOP);
 		winLabel.setHorizontalAlignment(JLabel.CENTER);
-		winLabel.setPreferredSize(new Dimension(200, 200));
 		
 		JPanel winPanel = new JPanel();
 		winPanel.setLayout(new BorderLayout());
-		winPanel.add(winLabel, BorderLayout.CENTER);
-		winPanel.add(winButton, BorderLayout.PAGE_END);
-		winFrame = new JFrame();
+		winPanel.add(winLabel);
+		winPanel.add(winButton);
+		
+		JFrame winFrame = new JFrame();
 		winFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		winFrame.setTitle("Solitaire");
 		winFrame.setSize(1200, 750);
@@ -234,7 +217,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		update();
 		
 	}
-	
 	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -248,6 +230,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	}
 
+	// Precondition: none
+	// Postcondition: Sets the toMove cards and location cards
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -281,10 +265,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println("pressed button");
-		game.initiate();
-		winFrame.setVisible(false);
-		setVisible(true);
+		// TODO Auto-generated method stub
 
 	}
 }

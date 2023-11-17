@@ -26,6 +26,8 @@ public class CardDeckPanel extends JLayeredPane {
 		setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
 	}
 
+	// Precondition: the card at the top of the deck and the 3 faceup cards from the decek.
+	// Post: draws the two onto the screen.
 	public void setDisplayedDeck(Stack<Card> cards,Card topOfDeck) {
 		removeAll();
 		int i = 0;

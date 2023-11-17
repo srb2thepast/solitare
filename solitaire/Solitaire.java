@@ -5,7 +5,6 @@
 package solitaire;
 
 import java.util.*;
-import java.util.Queue;
 
 import solitaire.Card.Suit;
 
@@ -59,6 +58,9 @@ public class Solitaire {
 		return finalString;
 	}
 
+
+	// Precondition: none
+	// Postcondition: Sets up the game.
 	private void initiate() {
 		diamondsFinal = new Stack<Card>();
 		heartsFinal = new Stack<Card>();
@@ -105,6 +107,9 @@ public class Solitaire {
 
 	}
 
+
+	// Precondition: The card moving and the card to be moved to.
+	// Postcondition: Returns whether or not it's allowed.
 	public boolean legalMove(Card toMove, Card location) {
 
 		// display cards for debugging
@@ -120,7 +125,11 @@ public class Solitaire {
 		// if the moving card is the empty card (100 of spades), the move is illegal.
 		if (toMove.value == 100)
 			return false;
-
+		
+		// if the card is from the deck and it's not at the bottom of the deck, then invalid
+		Stack<Card> cardParent =findCardParent(toMove);
+		if (cardParent == faceUpDeckCards && cardParent.indexOf(toMove) != cardParent.size()-1) return false;
+		
 		// MOVING TO FINAL
 		
 		// make sure the toMove card is at the bottom of whatever container it's located in
@@ -187,7 +196,9 @@ public class Solitaire {
 	}
 
 	Queue<Card> secondDeck = new LinkedList<Card>();
-	
+
+	// Precondition: None
+	// Postcondition: Updates the deck with the next 3 available cards.
 	public Stack<Card> getNextDeckCards() {
 		Stack<Card> revealedCards = new Stack<Card>();
 		System.out.println("next card value = " + deck.peek().value);
@@ -220,6 +231,30 @@ public class Solitaire {
 		faceUpDeckCards = revealedCards;
 		return revealedCards;
 
+	}
+
+	// Precondition: The card you wish to find  the parent of.
+	// Postcondition: Returns the stack that this card is contained in.
+	public Stack<Card> findCardParent(Card card) {
+		
+		for (Stack<Card> centerStack : centerPiles) {
+			if (centerStack.contains(card)) {
+				return centerStack;
+			}
+		}
+		if (faceUpDeckCards.contains(card)) return faceUpDeckCards;
+		
+		ArrayList<Stack<Card>> stacks = new ArrayList<Stack<Card>>();
+		stacks.add(heartsFinal);
+		stacks.add(diamondsFinal);
+		stacks.add(clubsFinal);
+		stacks.add(spadesFinal);
+		for (Stack<Card> winStack : stacks) {
+			if (winStack.contains(card)) {
+				return winStack;
+			}
+		}
+		return null;
 	}
 	
 	//precondition: an instance of solitaire is initialized
