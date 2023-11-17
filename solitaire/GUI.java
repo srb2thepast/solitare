@@ -108,6 +108,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		System.out.println(game.toString());
 		revalidate();
 		repaint();
+		if(game.checkWin()) {
+			win();
+		}
 	}
 
 	@Override
@@ -222,7 +225,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		winPanel.setLayout(new BorderLayout());
 		winPanel.add(winLabel, BorderLayout.CENTER);
 		winPanel.add(winButton, BorderLayout.PAGE_END);
-		JFrame winFrame = new JFrame();
+		winFrame = new JFrame();
 		winFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		winFrame.setTitle("Solitaire");
 		winFrame.setSize(1200, 750);
@@ -278,7 +281,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		System.out.println("pressed button");
+		game.initiate();
+		winFrame.setVisible(false);
+		setVisible(true);
 
 	}
 }
