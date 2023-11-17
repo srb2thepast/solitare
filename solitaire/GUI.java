@@ -197,7 +197,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	public void win() {
 		setVisible(false);
 		JButton winButton = new JButton();
-		winButton.setBounds(100,100,250,100);
+		//winButton.setBounds(100,100,250,100);
 		winButton.addActionListener(this);
 		winButton.setText("Go Back");
 		winButton.setFont(new Font("Comic Sans MS", Font.PLAIN,20));
@@ -206,22 +206,22 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		winButton.setVerticalTextPosition(JButton.BOTTOM);
 		winButton.setVerticalAlignment(JButton.CENTER);
 		winButton.setHorizontalAlignment(JButton.CENTER);
-		
+		winButton.setPreferredSize(new Dimension(250, 100));
 		
 		JLabel winLabel = new JLabel();
-		winLabel.setText("YOU WIN");
+		winLabel.setText("YOU WIN ");
 		winLabel.setHorizontalTextPosition(JLabel.CENTER);
 		winLabel.setVerticalTextPosition(JLabel.TOP);
 		winLabel.setFont(new Font("Comic Sans MS", Font.PLAIN,40));
 		winLabel.setOpaque(true);
-		winLabel.setVerticalAlignment(JLabel.TOP);
+		winLabel.setVerticalAlignment(JLabel.CENTER);
 		winLabel.setHorizontalAlignment(JLabel.CENTER);
+		winLabel.setPreferredSize(new Dimension(200, 200));
 		
 		JPanel winPanel = new JPanel();
 		winPanel.setLayout(new BorderLayout());
-		winPanel.add(winLabel);
-		winPanel.add(winButton);
-		
+		winPanel.add(winLabel, BorderLayout.CENTER);
+		winPanel.add(winButton, BorderLayout.PAGE_END);
 		JFrame winFrame = new JFrame();
 		winFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		winFrame.setTitle("Solitaire");
@@ -231,6 +231,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		update();
 		
 	}
+	
 	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
